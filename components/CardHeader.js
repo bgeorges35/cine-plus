@@ -1,28 +1,9 @@
 import React from "react";
-import Carousel from "react-material-ui-carousel";
-
-import Link from "next/link";
 
 import { Card } from "@material-ui/core";
+import Link from "next/link";
 
-export default function HeadCaroussel({ movies }) {
-  return (
-    <Carousel
-      style={{ borderRadius: 0 }}
-      stopAutoPlayOnHover={false}
-      navButtonsAlwaysInvisible={true}
-      indicators={false}
-      animation="slide"
-      interval={10000}
-    >
-      {movies.map((item, i) => (
-        <Item key={i} item={item.node} />
-      ))}
-    </Carousel>
-  );
-}
-
-function Item({ item }) {
+export default function CardHeader({ item }) {
   return (
     <Link
       href={{

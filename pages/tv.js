@@ -14,7 +14,10 @@ export default function HomeTV({ trending, genres }) {
         <link rel="icon" href="/play.png" />
       </Head>
       <HeadCaroussel movies={trending} />
-      <GridCaroussel genres={genres} type={["tv"]} />
+      <GridCaroussel
+        genres={genres.filter((item) => item.node.tv.popular.totalCount > 5)}
+        type={["tv"]}
+      />
     </>
   );
 }
@@ -29,6 +32,7 @@ export async function getStaticProps() {
               backdrop(size: $backdropSize)
               name
               overview
+              id
             }
           }
         }
@@ -37,13 +41,18 @@ export async function getStaticProps() {
   `;
 
   const GET_GENRES = gql`
-    query Get_Genres {
+    query Query($allFirst: Int) {
       genres {
-        all {
+        all(first: $allFirst) {
           edges {
             node {
               name
               id
+              tv {
+                popular {
+                  totalCount
+                }
+              }
             }
           }
         }
@@ -61,6 +70,9 @@ export async function getStaticProps() {
 
   const genres = await client.query({
     query: GET_GENRES,
+    variables: {
+      allFirst: 10,
+    },
   });
 
   return {
